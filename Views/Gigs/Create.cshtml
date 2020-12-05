@@ -11,20 +11,24 @@
                 <div class="form-group">
                     <label asp-for="@Model.Venue"></label>
                     <input type="text" class="form-control" asp-for="@Model.Venue">
+                    <span asp-validation-for="@Model.Venue" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.Date"></label>
                     <input  class="form-control" asp-for="@Model.Date">
+                    <span asp-validation-for="@Model.Date" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.Time"></label>
-                    <input  class="form-control" asp-for="@Model.Time">
+                    <input class="form-control" asp-for="@Model.Time">
+                    <span asp-validation-for="@Model.Time" class="text-danger"></span>
                 </div>
                 <div class=" form-group">
                     <label asp-for="@Model.Genre"></label>
-                    <select class="form-control" asp-for="@Model.Genre" asp-items="@(new SelectList(Model.Genres,"Id","Name"))" >
+                    <select class="form-control" asp-for="@Model.Genre" asp-items="@(new SelectList(Model.Genres,"Id","Name"))">
                         <option>Select..</option>
                     </select>
+                    <span asp-validation-for="@Model.Genre" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Save</button>
             </form>

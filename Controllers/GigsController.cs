@@ -36,17 +36,23 @@ namespace GigHub.Controllers
         [HttpPost]
         public IActionResult Create(GigFormVM model)
         {
-            var gig = new Gig()
+            if (ModelState.IsValid)
             {
-                ArtistId= _userManager.GetUserId(User),
-                DateTime =model.DateTime,
-                GenreId = model.Genre,
-                Venue = model.Venue
-            };
-            _context.Gigs.Add(gig);
-            _context.SaveChanges();
+                var gig = new Gig()
+                {
+                    ArtistId = _userManager.GetUserId(User),
+                    DateTime = model.GetDateTime(),
+                    GenreId = model.Genre,
+                    Venue = model.Venue
+                };
+                _context.Gigs.Add(gig);
+                _context.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
+            }
+
+            model.Genres = _context.Genres.ToList();
+            return View(model);
 
         }
     }
