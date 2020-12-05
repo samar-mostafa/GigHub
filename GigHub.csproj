@@ -8,6 +8,10 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20201126150131_CreateGigTable.cs" />
     <Compile Remove="Data\Migrations\20201126150131_CreateGigTable.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201205010708_AddForeignKeyProperitesToGig.cs" />
+    <Compile Remove="Data\Migrations\20201205010708_AddForeignKeyProperitesToGig.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201205010924_AddForeignKeyProperitesToGig.cs" />
+    <Compile Remove="Data\Migrations\20201205010924_AddForeignKeyProperitesToGig.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

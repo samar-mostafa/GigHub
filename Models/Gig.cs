@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,11 +9,13 @@ namespace GigHub.Models
 {
     public class Gig
     {
-       
         public int Id { get; set; }
 
         [Required]
+        public string  ArtistId { get; set; }
+
         public ApplicationUser Artist { get; set; }
+
 
         public DateTime DateTime { get; set; }
 
@@ -21,6 +24,8 @@ namespace GigHub.Models
         public string Venue  { get; set; }
 
         [Required]
+        public int GenreId { get; set; }
+
         public Genre Genre { get; set; }
     }
 }

@@ -9,9 +9,10 @@ namespace GigHub.ViewModels
     public class GigFormVM
     {
         public string Venue { get; set; }
-        public DateTime Date { get; set; }
-        public DateTime Time { get; set; }
+        public string Date { get; set; }
+        public string Time { get; set; }
         public int Genre { get; set; }
         public IEnumerable<Genre> Genres { get; set; }
     }
+    
 }
