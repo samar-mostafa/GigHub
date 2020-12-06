@@ -7,20 +7,21 @@
 <h3>Add A Gig</h3>
     <div class="container">
         <div style="width:500px">
+            <p class="alert alert-info">All Fields Are <strong>Required</strong></p>
             <form asp-action="Create" method="post">
                 <div class="form-group">
                     <label asp-for="@Model.Venue"></label>
-                    <input type="text" class="form-control" asp-for="@Model.Venue">
+                    <input type="text" class="form-control" asp-for="@Model.Venue" autofocus="autofocus">
                     <span asp-validation-for="@Model.Venue" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.Date"></label>
-                    <input  class="form-control" asp-for="@Model.Date">
+                    <input  class="form-control" asp-for="@Model.Date" placeholder="eg 1 jan 2020">
                     <span asp-validation-for="@Model.Date" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.Time"></label>
-                    <input class="form-control" asp-for="@Model.Time">
+                    <input class="form-control" asp-for="@Model.Time" placeholder="eg 20:00">
                     <span asp-validation-for="@Model.Time" class="text-danger"></span>
                 </div>
                 <div class=" form-group">

@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace GigHub.ViewModels
 {
-    public class FutureDate:ValidationAttribute
+    public class ValidTime : ValidationAttribute
     {
         public override bool IsValid(object value)
         {
             DateTime dateTime;
-            bool isValid = DateTime.TryParseExact(Convert.ToString(value),
-                "d MMM yyyy",
+
+            bool valid = DateTime.TryParseExact(Convert.ToString(value),
+                "HH:MM",
                 CultureInfo.CurrentCulture,
                 DateTimeStyles.None,
                 out dateTime);
 
-            return (isValid && dateTime > DateTime.Now);
+            return (valid);
         }
     }
-
 }

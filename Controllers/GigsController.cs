@@ -39,12 +39,13 @@ namespace GigHub.Controllers
             if (ModelState.IsValid)
             {
                 var gig = new Gig()
-                {
+                {                   
                     ArtistId = _userManager.GetUserId(User),
                     DateTime = model.GetDateTime(),
                     GenreId = model.Genre,
-                    Venue = model.Venue
+                    Venue = model.Venue                  
                 };
+            
                 _context.Gigs.Add(gig);
                 _context.SaveChanges();
 
