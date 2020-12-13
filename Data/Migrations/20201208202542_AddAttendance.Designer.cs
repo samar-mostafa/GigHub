@@ -4,14 +4,16 @@ using GigHub.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GigHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201208202542_AddAttendance")]
+    partial class AddAttendance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,21 +104,6 @@ namespace GigHub.Data.Migrations
                     b.HasIndex("AttendeeId");
 
                     b.ToTable("Attendances");
-                });
-
-            modelBuilder.Entity("GigHub.Models.Following", b =>
-                {
-                    b.Property<string>("FollowerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FolloweeId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("FollowerId", "FolloweeId");
-
-                    b.HasIndex("FolloweeId");
-
-                    b.ToTable("Followings");
                 });
 
             modelBuilder.Entity("GigHub.Models.Genre", b =>
@@ -313,22 +300,7 @@ namespace GigHub.Data.Migrations
                     b.HasOne("GigHub.Models.Gig", "Gig")
                         .WithMany()
                         .HasForeignKey("GigId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("GigHub.Models.Following", b =>
-                {
-                    b.HasOne("GigHub.Models.ApplicationUser", "Followee")
-                        .WithMany("Followers")
-                        .HasForeignKey("FolloweeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("GigHub.Models.ApplicationUser", "Follower")
-                        .WithMany("Follwees")
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

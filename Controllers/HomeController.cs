@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using GigHub.Models;
 using GigHub.Data;
 using Microsoft.EntityFrameworkCore;
+using GigHub.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace GigHub.Controllers
 {
@@ -16,17 +18,27 @@ namespace GigHub.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, 
+                              ApplicationDbContext context,
+                              SignInManager<ApplicationUser> signInManager)
         {
             _logger = logger;
             _context = context;
+            _signInManager = signInManager;
         }
 
         public IActionResult Index()
         {
-            var upComingGigs = _context.Gigs.Include(g => g.Artist).Include(g=>g.Genre).Where(g => g.DateTime > DateTime.Now);
-            return View(upComingGigs);
+            var model = new GigsVM
+            {
+                UpcomingGigs = _context.Gigs.Include(g => g.Artist)
+                               .Include(g => g.Genre).Where(g => g.DateTime > DateTime.Now),
+                showActions = _signInManager.IsSignedIn(User)
+            };
+           
+            return View(model);
         }
 
         public IActionResult Privacy()

@@ -33,8 +33,9 @@ namespace GigHub
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation(); 
             services.AddRazorPages();
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +45,10 @@ namespace GigHub
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Archidiem.API v1"));
+
             }
             else
             {

@@ -1,0 +1,43 @@
+﻿@model GigHub.ViewModels.GigsVM
+
+@{
+    ViewData["Title"] = "Attending";
+}
+
+<h1>Attending</h1>
+
+<ul class="gigs">
+    @foreach (var g in Model.UpcomingGigs)
+    {
+        <li>
+            <div class="date">
+                <div class="month">
+                    @g.DateTime.ToString("MMM")
+                </div>
+                <div class="day">
+                    @g.DateTime.ToString("d ")
+                </div>
+            </div>
+            <div class="details">
+                <span class="artist">
+                    @g.Artist.Name
+                    @if (@Model.showActions)
+                    {
+                        <button data-artist-id="@g.ArtistId" class="btn btn-link btn-sm js_toggle_following">Follow</button>
+                    }
+
+                </span>
+                <span class="genre">@g.Genre.Name</span>
+                @if (@Model.showActions)
+                {
+                    <button id="btn" data-gig-id="@g.Id" class="btn btn-outline-primary btn-sm js_toggle_attendance ml-5">Going ?</button>
+                }
+
+            </div>
+        </li>
+    }
+</ul>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

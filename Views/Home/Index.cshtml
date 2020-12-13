@@ -1,11 +1,12 @@
-﻿@model IEnumerable<Gig>;
+﻿@model GigHub.ViewModels.GigsVM;
+
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <ul class="gigs">
-    @foreach (var g in Model)
+    @foreach (var g in Model.UpcomingGigs)
     {
         <li>
             <div class="date">
@@ -17,9 +18,104 @@
                 </div>
             </div>
             <div class="details">
-                <span class="artist">@g.Artist.Name</span>
+                <span class="artist">
+                    @g.Artist.Name
+                    @if (@Model.showActions)
+                    {
+                        <button data-artist-id="@g.ArtistId" class="btn btn-link btn-sm js_toggle_following">Follow</button>
+                    }
+
+                </span>
                 <span class="genre">@g.Genre.Name</span>
+                @if (@Model.showActions)
+                {
+                    <button id="btn" data-gig-id="@g.Id" class="btn btn-outline-primary btn-sm js_toggle_attendance ml-5">Going ?</button>
+                }
+
             </div>
-        </li>
-    }   
+    </li>
+}
 </ul>
+
+
+
+@section Scripts
+{
+    <script>
+      
+        $(document).ready(function ()
+        {
+            $(".js_toggle_attendance").click(function (e)
+            {
+                var button = $(e.target);
+                var btn = document.getElementById("btn");
+                
+                var gigId = Number.parseInt(button.attr("data-gig-id"));
+           
+                $.ajax({
+                    url: "/api/Attendances",
+                    method: "POST",
+                    data: JSON.stringify({ gigId: gigId }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    
+                    success: function () {
+                        button.
+                            removeClass("btn-outline-primary")
+                            .addClass("btn-info")
+                            .text("Going")
+                    },
+                    error: function (status) {
+                        console.log(status);
+                    }
+            });
+
+        });
+
+            // button. //        debugger;
+            //        button.
+            //            removeClass("btn-outline-primary")
+            //            .addClass("btn-info")
+            //            .text("Going")
+            //    })
+            //        .done(function () {
+            //            button.
+            //                removeClass("btn-outline-primary")
+            //                .addClass("btn-info")
+            //                .text("Going")
+            //        })
+            //        .fail(function (resp) {
+            //            debugger;
+            //            alert("something faild!")
+        });
+        $(document).ready(function ()
+        {
+
+            $(".js_toggle_following").click(function (e) {
+                var button = $(e.target);
+                var followeeId = (button.attr("data-artist-id"));
+
+                $.ajax
+                    ({
+                        url: "/api/Following",
+                        method: "POST",
+                        data: JSON.stringify({ FolloweeId: followeeId }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+             
+                        success: function (data) {
+                            button
+                                .text("Following")
+                        }
+                    });
+            
+            });
+        });
+            
+    </script>
+
+}
