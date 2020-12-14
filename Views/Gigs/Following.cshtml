@@ -1,0 +1,16 @@
+﻿
+@model IEnumerable<ApplicationUser>;
+@{
+    ViewData["Title"] = "Following";
+}
+
+<h1>Following</h1>
+
+<ul>
+    @foreach(var a in Model)
+    {
+        <li>@a.Name -- @a.Email</li>
+        
+    }
+</ul>
+
