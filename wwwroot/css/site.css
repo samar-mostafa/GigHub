@@ -171,3 +171,14 @@ a.text-dark:focus, a.text-dark:hover {
         font-size: 14px;
         font-weight:lighter;
     }
+
+.gigs li .actions
+{
+    font-size:13px;
+    display:none;
+}
+
+.gigs li:hover .actions
+{
+    display:block;
+}

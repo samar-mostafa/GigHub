@@ -1,14 +1,18 @@
 ﻿
 @model GigHub.ViewModels.GigFormVM;
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = @Model.Heading;
 }
 
-<h3>Add A Gig</h3>
+<h3>@Model.Heading</h3>
     <div class="container">
         <div style="width:500px">
             <p class="alert alert-info">All Fields Are <strong>Required</strong></p>
-            <form asp-action="Create" method="post">
+            <form asp-action=@Model.Action method="post">
+                <div class="form-group" hidden>
+                    <label asp-for="@Model.Id"></label>
+                    <input type="text" class="form-control" asp-for="@Model.Id" autofocus="autofocus">
+                </div>
                 <div class="form-group">
                     <label asp-for="@Model.Venue"></label>
                     <input type="text" class="form-control" asp-for="@Model.Venue" autofocus="autofocus">
@@ -16,7 +20,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.Date"></label>
-                    <input  class="form-control" asp-for="@Model.Date" placeholder="eg 1 jan 2020">
+                    <input class="form-control" asp-for="@Model.Date" placeholder="eg 1 jan 2020">
                     <span asp-validation-for="@Model.Date" class="text-danger"></span>
                 </div>
                 <div class="form-group">

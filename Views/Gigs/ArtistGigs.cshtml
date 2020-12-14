@@ -23,6 +23,9 @@
                     @g.Venue
                 </span>
                 <span class="genre">@g.Genre.Name</span>
+                <div class="actions">
+                    <a asp-action="Edit" asp-controller="Gigs" asp-route-id="@g.Id">Edit</a>
+                </div>
             </div>
         </li>
     }
