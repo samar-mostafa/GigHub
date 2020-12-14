@@ -73,16 +73,15 @@ namespace GigHub.Controllers
                        Select(a => a.Gig).
                        ToList();
 
-            var gigs2 = _context.Gigs.Include(e=>e.Genre)
-                .Include(e=>e.Artist).Where(e => e.ArtistId == userId).ToListAsync();
-
+           
             var model = new GigsVM
             {
                 UpcomingGigs = gigs,
-                showActions = _signInManager.IsSignedIn(User)
+                showActions = _signInManager.IsSignedIn(User),
+                Heading="Gigs I'm Going"
              };
 
-           return View(model);
+           return View("Gigs",model);
         }
     }
 }

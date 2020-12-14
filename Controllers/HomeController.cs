@@ -35,10 +35,11 @@ namespace GigHub.Controllers
             {
                 UpcomingGigs = _context.Gigs.Include(g => g.Artist)
                                .Include(g => g.Genre).Where(g => g.DateTime > DateTime.Now),
-                showActions = _signInManager.IsSignedIn(User)
+                showActions = _signInManager.IsSignedIn(User),
+                Heading = "UpComing Gigs"
             };
            
-            return View(model);
+            return View("Gigs",model);
         }
 
         public IActionResult Privacy()
