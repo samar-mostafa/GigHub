@@ -10,42 +10,45 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GigHub.Controllers
+namespace GigHub.Controllers.API
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class FollowingController : ControllerBase
+   
+    public class AttendancesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public FollowingController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AttendancesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-
+       
         [HttpPost]
-        public IActionResult Follow(FollowingDTO dto)
+        public IActionResult Attend(AttendanceDTO dto)
         {
             var userId = _userManager.GetUserId(User);
-            var exist = _context.Followings.Any(f => f.FolloweeId == userId && f.FolloweeId == dto.FolloweeId);
+            var exist = _context.Attendances.Any(a => 
+                         a.GigId == dto.gigId && a.AttendeeId == userId);
 
             if (exist)
-                return BadRequest("Following Allready Exist");
+                return BadRequest("it is allready exist");
 
-            var following = new Following
+            var attendance = new Attendance
             {
-                FollowerId = userId,
-                FolloweeId = dto.FolloweeId
+                GigId = dto.gigId,
+                AttendeeId = userId
             };
 
-            _context.Followings.Add(following);
+            _context.Attendances.Add(attendance);
             _context.SaveChanges();
 
             return Ok();
-
+        
         }
     }
 }

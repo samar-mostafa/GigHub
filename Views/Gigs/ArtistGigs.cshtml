@@ -24,9 +24,79 @@
                 </span>
                 <span class="genre">@g.Genre.Name</span>
                 <div class="actions">
-                    <a asp-action="Edit" asp-controller="Gigs" asp-route-id="@g.Id">Edit</a>
-                </div>
+                    <a asp-action="Edit" asp-controller="Gigs" asp-route-id="@g.Id">Edit</a>|
+                    <a href="#" class="js-cancel-gig" data-gig-id="@g.Id">Cancel</a>
+                </div>     
             </div>
         </li>
     }
 </ul>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('.js-cancel-gig').click(function (e) {
+
+                var link = $(e.target);
+                bootbox.dialog
+                    ({
+                        title: 'Confirm',
+                        message: '<p>Are you sure you want to delete this gig !!?</p>',
+                        size: 'large',
+                        onEscape: true,
+                        backdrop: true,
+                        buttons: {
+                            No: {
+                                label: 'No',
+                                className: 'btn-light',
+                                callback: function () {
+                                    bootbox.hideAll();
+                                }
+                            },
+                            Yes: {
+                                label: 'Yes',
+                                className: 'btn-danger',
+                                callback: function () {
+                                    $.ajax({
+                                        url: "/api/gigs/" + link.attr("data-gig-id"),
+                                        method: "DELETE",
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Accept': 'application/json'
+                                        },
+                                        dataType: 'script',
+                                        success: function () {
+                                            link.parent('li').fadeOut(function () {
+                                                this.remove;
+                                                console.log("sucess");
+                                            });
+                                        },
+                                        error: function (status, data) {
+                                            console.log(status + data);
+                                            alert("somethinf failed!!");
+                                        }
+                                    });
+                                }
+                            }
+                        }
+            });
+
+                              
+                    //    .done(function () {
+                    //        link.parent('li').fadeOut(function () {
+                    //            this.remove;
+                    //            console.log("sucess");
+                    //        });
+                    //    })
+                    //    .fail(function () {
+                    //        alert("there is something failed!!")
+                    //});
+                   
+            });
+
+        });
+
+    </script>
+
+}

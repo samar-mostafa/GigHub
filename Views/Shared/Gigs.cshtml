@@ -21,6 +21,11 @@
             <div class="details">
                 <span class="artist">
                     @g.Artist.Name
+                    @if(@g.IsCancled)
+                    {
+                     <span class=" alert alert-warning">Canceled</span>
+                    }
+
                     @if (@Model.showActions)
                     {
                         <button data-artist-id="@g.ArtistId" class="btn btn-link btn-sm js_toggle_following">Follow</button>
@@ -28,7 +33,7 @@
 
                 </span>
                 <span class="genre">@g.Genre.Name</span>
-                @if (@Model.showActions)
+                @if (@Model.showActions && !g.IsCancled )
                 {
                     <button id="btn" data-gig-id="@g.Id" class="btn btn-outline-primary btn-sm js_toggle_attendance ml-5">Going ?</button>
                 }
@@ -75,21 +80,6 @@
 
         });
 
-            // button. //        debugger;
-            //        button.
-            //            removeClass("btn-outline-primary")
-            //            .addClass("btn-info")
-            //            .text("Going")
-            //    })
-            //        .done(function () {
-            //            button.
-            //                removeClass("btn-outline-primary")
-            //                .addClass("btn-info")
-            //                .text("Going")
-            //        })
-            //        .fail(function (resp) {
-            //            debugger;
-            //            alert("something faild!")
         });
         $(document).ready(function ()
         {

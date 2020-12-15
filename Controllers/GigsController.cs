@@ -27,7 +27,6 @@ namespace GigHub.Controllers
         }
 
         [Authorize]
-        [HttpGet]
         public IActionResult Create()
         {
             var viewModel = new GigFormVM()
@@ -39,7 +38,7 @@ namespace GigHub.Controllers
         }
 
 
-        [HttpPost]
+       [HttpPost]
         public IActionResult Create(GigFormVM model)
         {
             if (ModelState.IsValid)
@@ -100,14 +99,16 @@ namespace GigHub.Controllers
         {
             var userId = _userManager.GetUserId(User);
             var gigs = _context.Gigs
-                      .Where(g => g.ArtistId == userId && g.DateTime > DateTime.Now)
+                      .Where(g => 
+                      g.ArtistId == userId && 
+                      g.DateTime > DateTime.Now &&
+                      !g.IsCancled)
                       .Include(g => g.Genre).ToList();
 
             return View(gigs);
         }
 
         [Authorize]
-        [HttpGet]
         public IActionResult Edit(int id)
         {
             var userId = _userManager.GetUserId(User);
@@ -127,8 +128,7 @@ namespace GigHub.Controllers
             return View("GigForm", model);
         }
 
-        [Authorize]
-        [HttpPost]
+        [Authorize]    
         public IActionResult Update(GigFormVM model)
         {
             if (ModelState.IsValid)

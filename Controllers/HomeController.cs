@@ -34,7 +34,8 @@ namespace GigHub.Controllers
             var model = new GigsVM
             {
                 UpcomingGigs = _context.Gigs.Include(g => g.Artist)
-                               .Include(g => g.Genre).Where(g => g.DateTime > DateTime.Now),
+                               .Include(g => g.Genre).
+                               Where(g => g.DateTime > DateTime.Now && !g.IsCancled ),
                 showActions = _signInManager.IsSignedIn(User),
                 Heading = "UpComing Gigs"
             };

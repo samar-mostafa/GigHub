@@ -3,52 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GigHub.Data;
-using GigHub.DTO;
 using GigHub.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GigHub.Controllers
+namespace GigHub.Controllers.API
 {
-    
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-   
-    public class AttendancesController : ControllerBase
+    public class GigsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public AttendancesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+
+        public GigsController(ApplicationDbContext context , UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-       
-        [HttpPost]
-        public IActionResult Attend(AttendanceDTO dto)
+
+        [HttpDelete("{id}")]
+        public IActionResult Cancel(int id)
         {
             var userId = _userManager.GetUserId(User);
-            var exist = _context.Attendances.Any(a => 
-                         a.GigId == dto.gigId && a.AttendeeId == userId);
+            var gig = _context.Gigs.
+                SingleOrDefault(g => g.Id == id && g.ArtistId == userId);
 
-            if (exist)
-                return BadRequest("it is allready exist");
+            if (gig.IsCancled)
+                return NotFound();
+            
+            gig.IsCancled = true;
 
-            var attendance = new Attendance
-            {
-                GigId = dto.gigId,
-                AttendeeId = userId
-            };
-
-            _context.Attendances.Add(attendance);
+            _context.Update(gig);
             _context.SaveChanges();
-
             return Ok();
-        
         }
     }
 }
