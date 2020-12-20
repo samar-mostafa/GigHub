@@ -94,13 +94,23 @@ a.text-dark:focus, a.text-dark:hover {
         font-family: Lato,-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     }
 
+    .navbar-nav .notification {
+        position: relative;
+    }
+
+    .navbar-nav .notification .badge
+    {
+        position:absolute;
+        top:-2px;
+        right:-9px;
+        background-color:#a80a0a;
+    }
 
 
-
-.form-control {
-    width: 60%;
-    border-radius: 1rem;
-}
+    .form-control {
+        width: 60%;
+        border-radius: 1rem;
+    }
 
     .form-control:focus {    
         box-shadow: none;    
@@ -181,4 +191,27 @@ a.text-dark:focus, a.text-dark:hover {
 .gigs li:hover .actions
 {
     display:block;
+}
+
+ul.notifications
+{
+    list-style:none;
+    padding-left:0;
+}
+
+ul.notifications >li
+{
+    border-bottom:1px solid #ddd;
+    padding:10px 0;
+}
+
+ul.notifications > li:last-child
+    {
+        border-bottom:none;
+    }
+
+
+ul.notifications .highlight
+{
+    font-weight:bold;
 }

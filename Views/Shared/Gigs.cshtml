@@ -6,6 +6,8 @@
 }
 
 <h1 class="m-3">@Model.Heading</h1>
+
+
 <ul class="gigs">
     @foreach (var g in Model.UpcomingGigs)
     {
@@ -68,6 +70,7 @@
                     },
                     
                     success: function () {
+                       
                         button.
                             removeClass("btn-outline-primary")
                             .addClass("btn-info")

@@ -67,7 +67,9 @@
                                         },
                                         dataType: 'script',
                                         success: function () {
-                                            link.parent('li').fadeOut(function () {
+                                          
+                                            var li = link.closest('li');
+                                           li.fadeOut(function () {
                                                 this.remove;
                                                 console.log("sucess");
                                             });

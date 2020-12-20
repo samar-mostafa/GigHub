@@ -5,6 +5,11 @@
     <ul class="navbar-nav">
         @if (SignInManager.IsSignedIn(User))
         {
+        <li class="pt-2 mr-2 notification">
+            
+          <a  href="#"><i class="fas fa-globe-europe" style="color:white;font-size:21px"></i></a>
+            <span class="badge js-notification-count text-white"></span>
+        </li>
             <li class="nav-item dropdown ">
                 <a class="nav-link dropdown-toggle text-white bgColor" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Hello @User.Identity.Name

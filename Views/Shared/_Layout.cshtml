@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,700;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/lib/animate.css/animate.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -44,7 +46,69 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootbox.min.js"></script>
+    <script src="~/lib/underscore.js/underscore.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
+    
+    @*<script type="text/x-handlebars-template" id="notification-template">
+        <ul class="notifications">
+            <%
+            _.each(notifications , function(notification){
+            
+            if(notification.type == 1){ %>
+            <li>
+                <span class="highlight"><%= notification.gig.artist.name %></span>
+                has canceled gig at <%= notification.gig.venue %> at
+                <%= moment(notification.gig.dateTime).format("D MMM HH:mm") %>
+            </li>
+
+            <% }
+            })
+            %>
+        </ul>
+
+    </script>*@
+    <script>
+                $(document).ready(function () {
+
+                    function notifi(notifications) {
+                        notifications.forEach(myFunction);
+
+                        function myFunction(notification) {
+                            var cont = ``;
+                            if (notification.type == 1) {
+                          var cont = ` <li>
+                <span class="highlight">` + notification.gig.artist.name + `</span>
+                has canceled gig at`+ notification.gig.venue + `at
+                `+ moment(notification.gig.dateTime).format + ("D MMM HH:mm")`
+            </li>`
+                            }
+
+                        }
+
+                    }
+
+                
+            $.getJSON('/api/notification', function (notifications) {
+                $('.js-notification-count').text(notifications.length).
+                    addClass('animate__animated animate__bounceInDown');
+        
+                $('.notification').popover({
+                    html: true,
+                    content: function () {
+                        //var compiled = _.template($("#notification-template").html());
+                        //return compiled({ notifications: notifications });
+                        return notifi(notifications);
+                        
+                    },
+
+                    placement: "bottom",
+                    title: "Notifications"
+
+                });
+            });
+
+        });
+    </script>
 </body>
 </html>

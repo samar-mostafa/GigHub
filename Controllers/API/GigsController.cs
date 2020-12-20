@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GigHub.Controllers.API
 {
@@ -31,16 +32,18 @@ namespace GigHub.Controllers.API
         {
             var userId = _userManager.GetUserId(User);
             var gig = _context.Gigs.
+                      Include(g=>g.Attendances).ThenInclude(a=>a.Attendee).
                 SingleOrDefault(g => g.Id == id && g.ArtistId == userId);
 
             if (gig.IsCancled)
                 return NotFound();
-            
-            gig.IsCancled = true;
 
+            gig.Cancel();
+            
             _context.Update(gig);
             _context.SaveChanges();
-            return Ok();
+
+            return Ok(new { value="success"});
         }
     }
 }
