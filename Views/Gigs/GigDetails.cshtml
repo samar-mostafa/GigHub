@@ -1,0 +1,36 @@
+﻿@model GigHub.ViewModels.GigDetailsVM
+
+@{
+    ViewData["Title"] = "GigDetails";
+}
+
+<h1>Gig Details</h1>
+
+<div class="m-3">
+
+    <h2>
+        @Model.Gig.Artist.Name
+
+        @if (Model.showActions)
+        {
+            @if (Model.IsFollowing)
+            {
+                <button type="button" class="btn btn-primary ml-1 btn-sm">Following</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-light ml-1 btn-sm">Follow</button>
+            }
+        }
+
+    </h2>
+
+    <p>Performing at @Model.Gig.Venue on @Model.Gig.DateTime </p>
+
+    @if (Model.showActions && Model.IsAttending)
+    {
+        <span>You are going this event</span>
+    }
+
+</div>
+

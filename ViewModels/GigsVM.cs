@@ -9,9 +9,11 @@ namespace GigHub.ViewModels
     public class GigsVM
     {
         public IEnumerable<Gig> UpcomingGigs { get; set; }
+        public Gig Gig { get; set; }
         public bool showActions { get; set; }
-        public string  Heading { get; set; }
-
+        public string  Heading { get; set; }        
         public string SearchTerm { get; set; }
+        public bool Following { get; set; }
+        public bool Attend { get; set; }
     }
 }
