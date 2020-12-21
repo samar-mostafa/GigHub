@@ -150,5 +150,11 @@ namespace GigHub.Controllers
             model.Genres = _context.Genres.ToList();
             return View("GigsForm", model);
         }
+
+        [HttpPost]
+       public IActionResult Search(GigsVM model)
+        {
+            return RedirectToAction("Index", "Home", new { query = model.SearchTerm });
+        }
     }
 }

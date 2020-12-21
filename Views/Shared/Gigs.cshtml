@@ -6,7 +6,12 @@
 }
 
 <h1 class="m-3">@Model.Heading</h1>
-
+<form class="input-group mb-3 w-50" asp-action="Search" asp-controller="Gigs" method="post">
+    <input type="text" asp-for="SearchTerm" class="form-control" placeholder="Search by artist,genre... " aria-label="Recipient's username" aria-describedby="basic-addon2">
+    <button type="submit" class="input-group-text" id="basic-addon2">
+        <i class="fas fa-search"></i>
+    </button>
+</form>
 
 <ul class="gigs">
     @foreach (var g in Model.UpcomingGigs)
@@ -23,6 +28,7 @@
             <div class="details">
                 <span class="artist">
                     @g.Artist.Name
+
                     @if(@g.IsCancled)
                     {
                      <span class=" alert alert-warning">Canceled</span>
