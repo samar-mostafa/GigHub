@@ -46,60 +46,63 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootbox.min.js"></script>
+    <script src="~/lib/moment.js/moment.js"></script>
     <script src="~/lib/underscore.js/underscore.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
-    
+
     @*<script type="text/x-handlebars-template" id="notification-template">
-        <ul class="notifications">
-            <%
-            _.each(notifications , function(notification){
-            
-            if(notification.type == 1){ %>
-            <li>
-                <span class="highlight"><%= notification.gig.artist.name %></span>
-                has canceled gig at <%= notification.gig.venue %> at
-                <%= moment(notification.gig.dateTime).format("D MMM HH:mm") %>
-            </li>
+            <ul class="notifications">
+                <%
+                _.each(notifications , function(notification){
 
-            <% }
-            })
-            %>
-        </ul>
+                if(notification.type == 1){ %>
+                <li>
+                    <span class="highlight"><%= notification.gig.artist.name %></span>
+                    has canceled gig at <%= notification.gig.venue %> at
+                    <%= moment(notification.gig.dateTime).format("D MMM HH:mm") %>
+                </li>
 
-    </script>*@
+                <% }
+                })
+                %>
+            </ul>
+
+        </script>*@
     <script>
-                $(document).ready(function () {
+        $(document).ready(function () {
 
-                    function notifi(notifications) {
-                        notifications.forEach(myFunction);
+            function notifi(notifications) {
+                var cont = ``;
+                notifications.forEach(myFunction);
 
-                        function myFunction(notification) {
-                            var cont = ``;
-                            if (notification.type == 1) {
-                          var cont = ` <li>
-                <span class="highlight">` + notification.gig.artist.name + `</span>
-                has canceled gig at`+ notification.gig.venue + `at
-                `+ moment(notification.gig.dateTime).format + ("D MMM HH:mm")`
-            </li>`
-                            }
-
-                        }
+                function myFunction(notification) {
+                    debugger;
+                    if (notification.type == 3) {
+                        cont += ` <li>
+                    <span class="highlight">` + notification.gig.artist.name + `</span>
+                    has canceled gig at`+ notification.gig.venue + `at
+                    `+ moment(notification.gig.DateTime).format('MMMM Do YYYY, h:mm:ss a');`
+                </li>`
 
                     }
+                }
+                return cont;
+            }
 
-                
+
             $.getJSON('/api/notification', function (notifications) {
                 $('.js-notification-count').text(notifications.length).
                     addClass('animate__animated animate__bounceInDown');
-        
+
                 $('.notification').popover({
+
                     html: true,
                     content: function () {
-                        //var compiled = _.template($("#notification-template").html());
-                        //return compiled({ notifications: notifications });
-                        return notifi(notifications);
-                        
+
+                        var compiled = ` <ul class=\"notifications\">${notifi(notifications)} </ul>`;
+                        debugger;
+                        return compiled;
                     },
 
                     placement: "bottom",

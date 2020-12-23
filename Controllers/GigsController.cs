@@ -72,13 +72,18 @@ namespace GigHub.Controllers
                        .Include(e => e.Gig).ThenInclude(g => g.Genre).
                        Select(a => a.Gig).
                        ToList();
+            var attendances = _context.Attendances.
+                                Where(a => a.AttendeeId == userId && a.Gig.DateTime > DateTime.Now).
+                                ToList().
+                                ToLookup(a => a.GigId);
 
-           
+
             var model = new GigsVM
             {
                 UpcomingGigs = gigs,
                 showActions = _signInManager.IsSignedIn(User),
-                Heading="Gigs I'm Going"
+                Heading="Gigs I'm Going",
+                Attendances = attendances
              };
 
            return View("Gigs",model);

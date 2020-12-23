@@ -15,5 +15,6 @@ namespace GigHub.ViewModels
         public string SearchTerm { get; set; }
         public bool Following { get; set; }
         public bool Attend { get; set; }
+        public ILookup<int, Attendance> Attendances { get; internal set; }
     }
 }

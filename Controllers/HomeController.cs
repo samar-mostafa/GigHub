@@ -19,18 +19,23 @@ namespace GigHub.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public HomeController(ILogger<HomeController> logger, 
                               ApplicationDbContext context,
-                              SignInManager<ApplicationUser> signInManager)
+                              SignInManager<ApplicationUser> signInManager,
+                              UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _context = context;
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         public IActionResult Index( string query = null)
         {
+            var userId = _userManager.GetUserId(User);
+
             var upcomingGigs = _context.Gigs.Include(g => g.Artist)
                                .Include(g => g.Genre).
                                Where(g => g.DateTime > DateTime.Now && !g.IsCancled);
@@ -41,13 +46,18 @@ namespace GigHub.Controllers
                                 g.Genre.Name.Contains(query) ||
                                 g.Venue.Contains(query));
             }
+            var attendances = _context.Attendances.
+                                Where(a => a.AttendeeId == userId && a.Gig.DateTime > DateTime.Now).
+                                ToList().
+                                ToLookup(a => a.GigId);
 
             var model = new GigsVM
             {
                 UpcomingGigs = upcomingGigs,
                 showActions = _signInManager.IsSignedIn(User),
                 Heading = "UpComing Gigs",
-                SearchTerm = query
+                SearchTerm = query,
+                Attendances = attendances
             };
            
             return View("Gigs",model);
