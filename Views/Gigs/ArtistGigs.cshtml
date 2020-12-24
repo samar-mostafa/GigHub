@@ -59,7 +59,7 @@
                                 className: 'btn-danger',
                                 callback: function () {
                                     $.ajax({
-                                        url: "/api/gigs/" + link.attr("data-gig-id"),
+                                        url: "/api/Cancel/gigs/" + link.attr("data-gig-id"),
                                         method: "DELETE",
                                         headers: {
                                             'Content-Type': 'application/json',

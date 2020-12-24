@@ -30,7 +30,7 @@ namespace GigHub.Controllers.API
         public IActionResult Follow(FollowingDTO dto)
         {
             var userId = _userManager.GetUserId(User);
-            var exist = _context.Followings.Any(f => f.FolloweeId == userId && f.FolloweeId == dto.FolloweeId);
+            var exist = _context.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == dto.FolloweeId);
 
             if (exist)
                 return BadRequest("Following Allready Exist");
@@ -47,5 +47,18 @@ namespace GigHub.Controllers.API
             return Ok();
 
         }
+
+        [HttpDelete("{artistId}")]
+        public IActionResult UnFollow(string artistId)
+        {
+            var userId = _userManager.GetUserId(User);
+            var following = _context.Followings.SingleOrDefault(f => f.FollowerId == userId && f.FolloweeId == artistId);
+            _context.Followings.Remove(following);
+            _context.SaveChanges();
+            return Ok(new { value = "success" });
+        }
+
+
+
     }
 }

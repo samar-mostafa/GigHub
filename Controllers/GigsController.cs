@@ -76,6 +76,9 @@ namespace GigHub.Controllers
                                 Where(a => a.AttendeeId == userId && a.Gig.DateTime > DateTime.Now).
                                 ToList().
                                 ToLookup(a => a.GigId);
+            var followings = _context.Followings.
+                           Where(f => f.FollowerId == userId)
+                           .ToList().ToLookup(f => f.FolloweeId);
 
 
             var model = new GigsVM
@@ -83,7 +86,8 @@ namespace GigHub.Controllers
                 UpcomingGigs = gigs,
                 showActions = _signInManager.IsSignedIn(User),
                 Heading="Gigs I'm Going",
-                Attendances = attendances
+                Attendances = attendances,
+                Followings=followings
              };
 
            return View("Gigs",model);

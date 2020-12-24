@@ -62,5 +62,7 @@ namespace GigHub.Controllers.API
             _context.SaveChanges();
             return Ok(gigId);
         }
+
+       
     }
 }

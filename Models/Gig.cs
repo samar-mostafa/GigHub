@@ -32,9 +32,12 @@ namespace GigHub.Models
 
         public ICollection<Attendance> Attendances { get;private set; }
 
+      
+
         public Gig()
         {
             Attendances = new Collection<Attendance>();
+         
         }
 
         public void Cancel()

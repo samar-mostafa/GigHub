@@ -36,22 +36,27 @@
 
                     @if (@Model.showActions)
                     {
-                        <button data-artist-id="@g.ArtistId" class="btn btn-link btn-sm js_toggle_following">Follow</button>
+                        <button data-artist-id="@g.ArtistId" class="btn  
+                                 @(Model.Followings.Contains(g.ArtistId) ? "text-primary" : "text-black-50")
+                                btn-link  btn-sm js_toggle_following">
+                            @(Model.Followings.Contains(g.ArtistId)? "Following": "Follow")
+                        </button>
                     }
 
                 </span>
                 <span class="genre">@g.Genre.Name</span>
-                @if (@Model.showActions && !g.IsCancled )
+                @if (@Model.showActions && !g.IsCancled)
                 {
             <button id="btn" data-gig-id="@g.Id"
-                    class="btn @(Model.Attendances.Contains(g.Id)?"btn-primary" : "btn-light")  btn-sm js_toggle_attendance ml-5">
-                @(Model.Attendances.Contains(g.Id)?"Going": "Going?")
+                    class="btn @(Model.Attendances.Contains(g.Id) ? "btn-primary" : "btn-light")  btn-sm js_toggle_attendance ml-5">
+                                @(Model.Attendances.Contains(g.Id) ? "Going" : "Going?")
             </button>
                 }
 
             </div>
     </li>
 }
+                
 </ul>
 
 
@@ -64,9 +69,7 @@
         {
             $(".js_toggle_attendance").click(function (e)
             {
-                var button = $(e.target);
-                var btn = document.getElementById("btn");
-                
+                var button = $(e.target);     
                 var gigId = Number.parseInt(button.attr("data-gig-id"));
 
                 if (button.hasClass("btn-light")) {
@@ -97,7 +100,7 @@
                         success: function () {
                             button.
                                 removeClass("btn-primary")
-                                .removeClass("btn-light")
+                                .addClass("btn-light")
                                 .text("Going?")
                         },
                         error: function () {
@@ -116,22 +119,42 @@
             $(".js_toggle_following").click(function (e) {
                 var button = $(e.target);
                 var followeeId = (button.attr("data-artist-id"));
+               
+                if (button.hasClass("text-black-50")) {
+                    
+                    $.ajax
+                        ({
+                            url: "/api/Following",
+                            method: "POST",
+                            data: JSON.stringify({ FolloweeId: followeeId }),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
 
-                $.ajax
-                    ({
-                        url: "/api/Following",
-                        method: "POST",
-                        data: JSON.stringify({ FolloweeId: followeeId }),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-             
-                        success: function (data) {
-                            button
-                                .text("Following")
-                        }
-                    });
+                            success: function (data) {
+                                button
+                                    .removeClass("text-black-50")
+                                    .addClass("text-primary")
+                                    .text("Following")
+                            }
+                        });
+                }
+                else {
+                    $.ajax
+                    
+                        ({
+                            url: "/api/Following/" + followeeId ,
+                            method: "DELETE",
+                            success: function () {
+                                button.removeClass("text-primary")
+                                    .addClass("text-black-50")
+                              .text("Follow")
+                            }
+
+                        });
+                 }
+                             
             
             });
         });

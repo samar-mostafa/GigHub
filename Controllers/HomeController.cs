@@ -40,6 +40,7 @@ namespace GigHub.Controllers
                                .Include(g => g.Genre).
                                Where(g => g.DateTime > DateTime.Now && !g.IsCancled);
 
+
             if (!string.IsNullOrWhiteSpace(query))
             {
                 upcomingGigs = upcomingGigs.Where(g => g.Artist.Name.Contains(query) ||
@@ -51,13 +52,18 @@ namespace GigHub.Controllers
                                 ToList().
                                 ToLookup(a => a.GigId);
 
+            var followings = _context.Followings.
+                           Where(f => f.FollowerId == userId)
+                           .ToList().ToLookup(f => f.FolloweeId);
+
             var model = new GigsVM
             {
                 UpcomingGigs = upcomingGigs,
                 showActions = _signInManager.IsSignedIn(User),
                 Heading = "UpComing Gigs",
                 SearchTerm = query,
-                Attendances = attendances
+                Attendances = attendances,
+                Followings =followings
             };
            
             return View("Gigs",model);

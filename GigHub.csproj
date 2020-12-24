@@ -20,6 +20,12 @@
     <Compile Remove="Data\Migrations\20201213034251_editAttendance.Designer.cs" />
     <Compile Remove="Data\Migrations\20201215204627_addNotification.cs" />
     <Compile Remove="Data\Migrations\20201215204627_addNotification.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201223121841_EditFollowingsTable.cs" />
+    <Compile Remove="Data\Migrations\20201223121841_EditFollowingsTable.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201223122348_EditFollowingsTable.cs" />
+    <Compile Remove="Data\Migrations\20201223122348_EditFollowingsTable.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201223130112_EditFollowingsTable.cs" />
+    <Compile Remove="Data\Migrations\20201223130112_EditFollowingsTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

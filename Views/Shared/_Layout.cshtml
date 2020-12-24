@@ -77,14 +77,33 @@
                 notifications.forEach(myFunction);
 
                 function myFunction(notification) {
-                    debugger;
                     if (notification.type == 3) {
                         cont += ` <li>
                     <span class="highlight">` + notification.gig.artist.name + `</span>
-                    has canceled gig at`+ notification.gig.venue + `at
+                    has canceled gig at` + notification.gig.venue + ` at
                     `+ moment(notification.gig.DateTime).format('MMMM Do YYYY, h:mm:ss a');`
                 </li>`
 
+                    } else if (notification.type == 2) {
+                        var changes = [];
+                        var orginalValues = [];
+                        var newValues = [];
+                        if (notification.originalVenue != notification.gig.venue) {
+                            changes.push('venue');
+                            orginalValues.push(notification.originalVenue);
+                            newValues.push(notification.gig.venue);
+                        }
+                        if (notification.originalDateTime != notification.gig.dateTime) {
+                            changes.push('date/time');
+                            orginalValues.push(notification.originalDateTime);
+                            newValues.push(notification.gig.dateTime)
+                        }
+                        cont += ` <li>
+                    <span class="highlight">` + notification.gig.artist.name + `</span>
+                    has changed the gig ` + changes.join(' and ') + ` from
+                    ` + orginalValues.join(' / ') + ` to ` + newValues.join(' / ') +` 
+                </li>`
+                         
                     }
                 }
                 return cont;
@@ -92,22 +111,21 @@
 
 
             $.getJSON('/api/notification', function (notifications) {
+                if (notifications.length == 0)
+                    return;
+
                 $('.js-notification-count').text(notifications.length).
                     addClass('animate__animated animate__bounceInDown');
 
                 $('.notification').popover({
-
                     html: true,
                     content: function () {
-
                         var compiled = ` <ul class=\"notifications\">${notifi(notifications)} </ul>`;
                         debugger;
                         return compiled;
                     },
-
                     placement: "bottom",
                     title: "Notifications"
-
                 });
             });
 
