@@ -76,18 +76,12 @@ namespace GigHub.Controllers
                                 Where(a => a.AttendeeId == userId && a.Gig.DateTime > DateTime.Now).
                                 ToList().
                                 ToLookup(a => a.GigId);
-            var followings = _context.Followings.
-                           Where(f => f.FollowerId == userId)
-                           .ToList().ToLookup(f => f.FolloweeId);
-
-
             var model = new GigsVM
             {
                 UpcomingGigs = gigs,
                 showActions = _signInManager.IsSignedIn(User),
                 Heading="Gigs I'm Going",
                 Attendances = attendances,
-                Followings=followings
              };
 
            return View("Gigs",model);
@@ -170,17 +164,18 @@ namespace GigHub.Controllers
         {
             var userId = _userManager.GetUserId(User);                      
             var gig = _context.Gigs.Include(g=>g.Artist).SingleOrDefault(g => g.Id == id);
-              
+            var followings = _context.Followings.
+                         Where(f => f.FollowerId == userId)
+                         .ToList().ToLookup(f => f.FolloweeId);
+
             var model = new GigDetailsVM
             {
                 Gig = gig,
+                Followings = followings
             };
-
+           
             if (_signInManager.IsSignedIn(User))
             {
-                model.IsFollowing = _context.Followings.
-                             Any(f => f.FollowerId == userId && f.FolloweeId == gig.ArtistId);
-
                 model.IsAttending = _context.Attendances.
                             Any(a => a.AttendeeId == userId && a.GigId == gig.Id);
                 model.showActions = true;

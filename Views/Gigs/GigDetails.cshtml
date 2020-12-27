@@ -11,18 +11,15 @@
     <h2>
         @Model.Gig.Artist.Name
 
-        @if (Model.showActions)
-        {
-            @if (Model.IsFollowing)
-            {
-                <button disabled type="button" class="btn btn-primary ml-1 btn-sm">Following</button>
-            }
-            else
-            {
-                <button disabled type="button" class="btn btn-light ml-1 btn-sm">Follow</button>
-            }
-        }
-
+       
+                @if (@Model.showActions)
+                {
+                    <button data-artist-id="@Model.Gig.ArtistId" class="btn
+                                 @(Model.Followings.Contains(Model.Gig.ArtistId) ? "btn-primary" : "btn-light")
+                                 btn-sm js_toggle_following">
+                        @(Model.Followings.Contains(Model.Gig.ArtistId)? "Following": "Follow")
+                    </button>
+                }
     </h2>
 
     <p>Performing at @Model.Gig.Venue on @Model.Gig.DateTime </p>
@@ -34,3 +31,16 @@
 
 </div>
 
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            GigsDetailsController.follow();
+            
+        });
+
+    </script>
+
+
+}

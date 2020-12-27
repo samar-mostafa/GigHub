@@ -52,9 +52,7 @@ namespace GigHub.Controllers
                                 ToList().
                                 ToLookup(a => a.GigId);
 
-            var followings = _context.Followings.
-                           Where(f => f.FollowerId == userId)
-                           .ToList().ToLookup(f => f.FolloweeId);
+           
 
             var model = new GigsVM
             {
@@ -62,8 +60,7 @@ namespace GigHub.Controllers
                 showActions = _signInManager.IsSignedIn(User),
                 Heading = "UpComing Gigs",
                 SearchTerm = query,
-                Attendances = attendances,
-                Followings =followings
+                Attendances = attendances
             };
            
             return View("Gigs",model);

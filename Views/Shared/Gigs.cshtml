@@ -13,10 +13,10 @@
     </button>
 </form>
 
-<ul class="gigs">
+<ul id="gigs" class="gigs">
     @foreach (var g in Model.UpcomingGigs)
     {
-        <li>
+        <li class="mb-2">
             <div class="date">
                 <div class="month">
                     @g.DateTime.ToString("MMM")
@@ -34,21 +34,14 @@
                      <span class=" alert alert-warning">Canceled</span>
                     }
 
-                    @if (@Model.showActions)
-                    {
-                        <button data-artist-id="@g.ArtistId" class="btn  
-                                 @(Model.Followings.Contains(g.ArtistId) ? "text-primary" : "text-black-50")
-                                btn-link  btn-sm js_toggle_following">
-                            @(Model.Followings.Contains(g.ArtistId)? "Following": "Follow")
-                        </button>
-                    }
+                    
 
                 </span>
-                <span class="genre">@g.Genre.Name</span>
+                <span class="genre d-block">@g.Genre.Name</span>
                 @if (@Model.showActions && !g.IsCancled)
                 {
             <button id="btn" data-gig-id="@g.Id"
-                    class="btn @(Model.Attendances.Contains(g.Id) ? "btn-primary" : "btn-light")  btn-sm js_toggle_attendance ml-5">
+                    class="btn @(Model.Attendances.Contains(g.Id) ? "btn-primary" : "btn-light")  btn-sm js_toggle_attendance">
                                 @(Model.Attendances.Contains(g.Id) ? "Going" : "Going?")
             </button>
                 }
@@ -67,96 +60,8 @@
       
         $(document).ready(function ()
         {
-            $(".js_toggle_attendance").click(function (e)
-            {
-                var button = $(e.target);     
-                var gigId = Number.parseInt(button.attr("data-gig-id"));
+            GigsController.init("#gigs");
 
-                if (button.hasClass("btn-light")) {
-                    $.ajax({
-                        url: "/api/Attendances",
-                        method: "POST",
-                        data: JSON.stringify({ gigId: gigId }),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-
-                        success: function () {
-
-                            button.
-                                removeClass("btn-light")
-                                .addClass("btn-primary")
-                                .text("Going")
-                        },
-                        error: function (status) {
-                            console.log(status);
-                        }
-                    });
-                } else {
-                    $.ajax({
-                        url: '/api/Attendances/Gigs/' + gigId,
-                        method: 'DELETE',
-                        success: function () {
-                            button.
-                                removeClass("btn-primary")
-                                .addClass("btn-light")
-                                .text("Going?")
-                        },
-                        error: function () {
-                            console.log("there is error");
-                        }
-                    });
-                }
-               
-
-        });
-
-        });
-        $(document).ready(function ()
-        {
-
-            $(".js_toggle_following").click(function (e) {
-                var button = $(e.target);
-                var followeeId = (button.attr("data-artist-id"));
-               
-                if (button.hasClass("text-black-50")) {
-                    
-                    $.ajax
-                        ({
-                            url: "/api/Following",
-                            method: "POST",
-                            data: JSON.stringify({ FolloweeId: followeeId }),
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json'
-                            },
-
-                            success: function (data) {
-                                button
-                                    .removeClass("text-black-50")
-                                    .addClass("text-primary")
-                                    .text("Following")
-                            }
-                        });
-                }
-                else {
-                    $.ajax
-                    
-                        ({
-                            url: "/api/Following/" + followeeId ,
-                            method: "DELETE",
-                            success: function () {
-                                button.removeClass("text-primary")
-                                    .addClass("text-black-50")
-                              .text("Follow")
-                            }
-
-                        });
-                 }
-                             
-            
-            });
         });
             
     </script>

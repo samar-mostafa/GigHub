@@ -13,5 +13,6 @@ namespace GigHub.ViewModels
 
         public bool showActions { get; set; }
         public bool IsAttending { get; set; }
+        public ILookup<string, Following> Followings { get; set; }
     }
 }
