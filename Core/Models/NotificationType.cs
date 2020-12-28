@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GigHub.Models
+namespace GigHub.Core.Models
 {
     public enum NotificationType
     {

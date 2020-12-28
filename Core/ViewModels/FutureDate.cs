@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GigHub.ViewModels
+namespace GigHub.Core.ViewModels
 {
     public class FutureDate:ValidationAttribute
     {

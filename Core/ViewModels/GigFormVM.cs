@@ -1,11 +1,11 @@
-﻿using GigHub.Models;
+﻿using GigHub.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GigHub.ViewModels
+namespace GigHub.Core.ViewModels
 {
     public class GigFormVM
     {

@@ -12,8 +12,11 @@ using GigHub.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using GigHub.Models;
 using AutoMapper;
+using GigHub.Data.Repositiories;
+using GigHub.Core;
+using GigHub.Date;
+using GigHub.Core.Models;
 
 namespace GigHub
 {
@@ -32,6 +35,7 @@ namespace GigHub
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<IUnitOfWork,UnitOfWork>();
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();

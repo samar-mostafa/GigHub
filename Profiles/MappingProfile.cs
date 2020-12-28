@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using GigHub.DTO;
-using GigHub.Models;
+using GigHub.Core.DTO;
+using GigHub.Core.Models;
 
 namespace GigHub.Profiles
 

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GigHub.Core;
+using GigHub.Core.DTO;
+using GigHub.Core.Models;
 using GigHub.Data;
-using GigHub.DTO;
-using GigHub.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -19,9 +20,10 @@ namespace GigHub.Controllers.API
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public FollowingController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        private readonly IUnitOfWork _unitOfWork;
+        public FollowingController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
         }
 
@@ -30,9 +32,8 @@ namespace GigHub.Controllers.API
         public IActionResult Follow(FollowingDTO dto)
         {
             var userId = _userManager.GetUserId(User);
-            var exist = _context.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == dto.FolloweeId);
-
-            if (exist)
+            
+            if (_unitOfWork.Followings.GetFollowing(dto.FolloweeId,userId) != null)
                 return BadRequest("Following Allready Exist");
 
             var following = new Following

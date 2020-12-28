@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GigHub.Models
+namespace GigHub.Core.Models
 {
     public class ApplicationUser:IdentityUser
     {

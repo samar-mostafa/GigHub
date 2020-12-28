@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GigHub.ViewModels.Account
+namespace GigHub.Core.ViewModels.Account
 {
     public class LoginVM
     {

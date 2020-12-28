@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GigHub.Core;
+using GigHub.Core.Models;
 using GigHub.Data;
-using GigHub.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -17,13 +18,13 @@ namespace GigHub.Controllers.API
     [Authorize]
     public class GigsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GigsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public GigsController( UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork)
         {
-            _context = context;
             _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
 
@@ -31,17 +32,20 @@ namespace GigHub.Controllers.API
         public IActionResult Cancel(int id)
         {
             var userId = _userManager.GetUserId(User);
-            var gig = _context.Gigs.
-                      Include(g => g.Attendances).ThenInclude(a => a.Attendee).
-                SingleOrDefault(g => g.Id == id && g.ArtistId == userId);
+            var gig = _unitOfWork.Gigs.GigWithAttendees(id);
+
+            if (gig == null)
+                return BadRequest("gig is null");
+
+            if (gig.ArtistId != userId)
+                return NotFound();
 
             if (gig.IsCancled)
                 return NotFound();
 
             gig.Cancel();
 
-            _context.Update(gig);
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return Ok(new { value = "success" });
         }
@@ -52,14 +56,13 @@ namespace GigHub.Controllers.API
         public IActionResult Attendances(int gigId)
         {
             var userId = _userManager.GetUserId(User);
-            var attendance = _context.Attendances.
-                             SingleOrDefault(a => a.GigId == gigId && a.AttendeeId == userId);
+            var attendance = _unitOfWork.Attendances.GetAttendance(gigId, userId);
             if(attendance == null)
             {
                 return NotFound();
             }
-            _context.Attendances.Remove(attendance);
-            _context.SaveChanges();
+            _unitOfWork.Attendances.Delete(attendance);
+            _unitOfWork.Complete();
             return Ok(gigId);
         }
 

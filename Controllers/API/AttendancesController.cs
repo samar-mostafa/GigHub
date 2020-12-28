@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GigHub.Core;
+using GigHub.Core.DTO;
+using GigHub.Core.Models;
+using GigHub.Core.Repositiories;
 using GigHub.Data;
-using GigHub.DTO;
-using GigHub.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -19,12 +21,12 @@ namespace GigHub.Controllers.API
    
     public class AttendancesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public AttendancesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
-        {
-            _context = context;
+        private readonly IUnitOfWork _unitOfWork;
+        public AttendancesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork)
+        { 
             _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
        
@@ -32,10 +34,8 @@ namespace GigHub.Controllers.API
         public IActionResult Attend(AttendanceDTO dto)
         {
             var userId = _userManager.GetUserId(User);
-            var exist = _context.Attendances.Any(a => 
-                         a.GigId == dto.gigId && a.AttendeeId == userId);
 
-            if (exist)
+            if (_unitOfWork.Attendances.GetAttendance(dto.gigId, userId) != null)
                 return BadRequest("it is allready exist");
 
             var attendance = new Attendance
@@ -44,8 +44,8 @@ namespace GigHub.Controllers.API
                 AttendeeId = userId
             };
 
-            _context.Attendances.Add(attendance);
-            _context.SaveChanges();
+            _unitOfWork.Attendances.AddAttendance(attendance);
+            _unitOfWork.Complete();
 
             return Ok();
         

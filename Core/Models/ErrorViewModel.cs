@@ -1,6 +1,6 @@
 using System;
 
-namespace GigHub.Models
+namespace GigHub.Core.Models
 {
     public class ErrorViewModel
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GigHub.Core.Models;
+using GigHub.Core.ViewModels.Account;
 using GigHub.Data;
-using GigHub.Models;
-using GigHub.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
